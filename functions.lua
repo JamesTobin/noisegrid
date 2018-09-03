@@ -1,34 +1,46 @@
-function noisegrid_appletree(x, y, z, area, data)
-	local c_tree = minetest.get_content_id("default:tree")
-	local c_apple = minetest.get_content_id("default:apple")
-	local c_appleaf = minetest.get_content_id("noisegrid:appleleaf")
-	local top = 3 + math.random(2)
-	for j = -2, top do
-		if j == top - 1 or j == top then
-			for i = -2, 2 do
-			for k = -2, 2 do
-				local vi = area:index(x + i, y + j, z + k)
-				if j == top - 1 and math.random() < 0.04 then
-					data[vi] = c_apple
-				elseif math.random(5) ~= 2 then
-					data[vi] = c_appleaf
-				end
-			end
-			end
-		elseif j == top - 2 then
-			for i = -1, 1 do
-			for k = -1, 1 do
-				if math.abs(i) + math.abs(k) == 2 then
-					local vi = area:index(x + i, y + j, z + k)
-					data[vi] = c_tree
-				end
-			end
-			end
-		else
-			local vi = area:index(x, y + j, z)
-			data[vi] = c_tree
-		end
-	end
+function noisegrid_tree(pos)
+	local trees = {
+        default.grow_new_pine_tree,
+        default.grow_new_jungle_tree,
+        default.grow_new_pine_tree,
+        default.grow_new_acacia_tree,
+        default.grow_new_aspen_tree,
+        default.grow_bush,
+        default.grow_acacia_bush,
+    }
+    
+    trees[math.random(#trees)](pos)
+end
+
+
+function noisegrid_crop(data, vi)
+	local crops = {
+        -- {"farming:wheat", 8},
+        -- {"farming:cotton", 8},
+        {"farming:pumpkin", 8},
+        {"farming:melon", 8},
+        {"farming:carrot", 8},
+        {"farming:tomato", 8},
+        {"farming:potato", 4},
+        {"farming:coffee", 5},
+        {"farming:barley", 7},
+        {"farming:hemp", 8},
+        {"farming:corn", 8},
+        {"farming:beetroot", 5},
+        {"farming:blueberry", 4},
+        {"farming:chili", 8},
+        {"farming:cucumber", 4},
+        {"farming:garlic", 5},
+        {"farming:onion", 5},
+        {"farming:pea", 5},
+        {"farming:pepper", 5},
+        {"farming:pineapple", 8},
+        {"farming:raspberry", 4},
+        {"farming:rhubarb", 3},
+    }
+    
+	local crop = crops[math.random(#crops)]
+    data[vi] = minetest.get_content_id(crop[1].."_"..crop[2])
 end
 
 
@@ -38,8 +50,11 @@ function noisegrid_grass(data, vi)
 	local c_grass3 = minetest.get_content_id("default:grass_3")
 	local c_grass4 = minetest.get_content_id("default:grass_4")
 	local c_grass5 = minetest.get_content_id("default:grass_5")
+	local c_grass_jungle = minetest.get_content_id("default:junglegrass")
 	local rand = math.random(5)
-	if rand == 1 then
+	if math.random(15) == 1 then
+        data[vi] = c_grass_jungle
+	elseif rand == 1 then
 		data[vi] = c_grass1
 	elseif rand == 2 then
 		data[vi] = c_grass2
