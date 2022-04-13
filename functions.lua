@@ -1,7 +1,7 @@
 function noisegrid_tree(pos)
 	local trees = {
---        default.grow_new_pine_tree,
---        default.grow_new_jungle_tree,
+        default.grow_new_aspen_tree,
+        default.grow_new_apple_tree,
         default.grow_new_pine_tree,
         default.grow_new_acacia_tree,
         default.grow_new_aspen_tree,
